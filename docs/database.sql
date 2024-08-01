@@ -7,4 +7,9 @@ CREATE TABLE users (
     password VARCHAR(120) NOT NULL
 );
 
+CREATE TABLE users_tokens (
+    jwt_token VARCHAR(145) NOT NULL PRIMARY KEY,
+    user_id INT NOT NULL,
+    expiration DATETIME NULL
+)
 --Modules

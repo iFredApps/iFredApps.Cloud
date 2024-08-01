@@ -1,4 +1,4 @@
-﻿using iFredCloud.Core.Interfaces;
+﻿using iFredCloud.Core.Interfaces.Services;
 using iFredCloud.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace iFredCloud.Api.Controllers
 {
-   [Route("api/[controller]")]
+    [Route("api/[controller]")]
    [ApiController]
    public class UsersController : ControllerBase
    {

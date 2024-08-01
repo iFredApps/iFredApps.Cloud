@@ -1,12 +1,14 @@
-using iFredCloud.Core.Interfaces;
+using iFredCloud.Core.Interfaces.Repository;
+using iFredCloud.Core.Interfaces.Services;
 using iFredCloud.Core.Services;
-using iFredCloud.Data.Data;
+using iFredCloud.Data;
 using iFredCloud.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System;
+using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +20,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IUserTokenRepository, UserTokenRepository>();
+builder.Services.AddScoped<IUserTokenService, UserTokenService>();
 
 builder.Services.AddControllers();
 
@@ -40,6 +44,18 @@ builder.Services.AddAuthentication(options =>
       ValidIssuer = builder.Configuration["Jwt:Issuer"],
       ValidAudience = builder.Configuration["Jwt:Audience"],
       IssuerSigningKey = new SymmetricSecurityKey(key)
+   };
+   options.Events = new JwtBearerEvents
+   {
+      OnTokenValidated = async context =>
+      {
+         var tokenService = context.HttpContext.RequestServices.GetRequiredService<IUserTokenService>();
+         var token = context.SecurityToken as JwtSecurityToken;
+         if (!await tokenService.IsTokenValid(token.RawData))
+         {
+            context.Fail("Invalid token");
+         }
+      }
    };
 });
 
@@ -88,7 +104,6 @@ if (app.Environment.IsDevelopment())
    app.UseSwaggerUI(c =>
    {
       c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredCloud API V1");
-      //c.RoutePrefix = string.Empty; // Define Swagger como página inicial
    });
    app.UseDeveloperExceptionPage();
 }

@@ -1,14 +1,10 @@
-﻿using iFredCloud.Core.Interfaces;
+﻿using iFredCloud.Core.Interfaces.Repository;
+using iFredCloud.Core.Interfaces.Services;
 using iFredCloud.Core.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace iFredCloud.Core.Services
 {
-   public class UserService : IUserService
+    public class UserService : IUserService
    {
       private readonly IUserRepository _userRepository;
 

@@ -1,6 +1,5 @@
-﻿using iFredCloud.Core.Interfaces;
+﻿using iFredCloud.Core.Interfaces.Repository;
 using iFredCloud.Core.Models;
-using iFredCloud.Data.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace iFredCloud.Data.Repositories
 {
-   public class UserRepository : IUserRepository
+    public class UserRepository : IUserRepository
    {
       private readonly AppDbContext _context;
 
