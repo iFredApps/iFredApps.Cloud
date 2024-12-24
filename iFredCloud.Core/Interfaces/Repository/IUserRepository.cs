@@ -7,14 +7,10 @@ using System.Threading.Tasks;
 
 namespace iFredCloud.Core.Interfaces.Repository
 {
-    public interface IUserRepository
-    {
-        Task<IEnumerable<User>> GetAllUsers();
-        Task<User> GetUserById(int id);
-        Task<User> GetUserByUsername(string username);
-        Task<User> GetUserByEmail(string email);
-        Task AddUser(User user);
-        Task UpdateUser(User user);
-        Task DeleteUser(int id);
-    }
+   public interface IUserRepository
+   {
+      Task<User> GetUserAsync(string user);
+      Task<User> GetUserByIdAsync(Guid userId);
+      Task AddUserAsync(User user);
+   }
 }

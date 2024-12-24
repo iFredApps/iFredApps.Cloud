@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace iFredCloud.Core.Interfaces.Repository
 {
-    public interface IUserTokenRepository
-    {
-        Task AddToken(UserToken token);
-        Task<bool> IsTokenValid(string token);
-    }
+   public interface ILicenseRepository
+   {
+      Task<License> GetLicenseByUserAndServiceAsync(Guid userId, string serviceType);
+      Task AddLicenseAsync(License license);
+   }
 }

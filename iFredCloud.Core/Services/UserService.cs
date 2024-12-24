@@ -1,10 +1,14 @@
-﻿using iFredCloud.Core.Interfaces.Repository;
+﻿using iFredApps.Lib.Base;
+using iFredCloud.Core.Interfaces.Repository;
 using iFredCloud.Core.Interfaces.Services;
 using iFredCloud.Core.Models;
+using System.Security.Cryptography;
+using System.Text;
+using System.Xml.Linq;
 
 namespace iFredCloud.Core.Services
 {
-    public class UserService : IUserService
+   public class UserService : IUserService
    {
       private readonly IUserRepository _userRepository;
 
@@ -13,59 +17,47 @@ namespace iFredCloud.Core.Services
          _userRepository = userRepository;
       }
 
-      public async Task<IEnumerable<User>> GetAllUsers()
+      public async Task<User> AuthenticateAsync(string user, string password)
       {
-         return await _userRepository.GetAllUsers();
+         var userData = await _userRepository.GetUserAsync(user);
+         if (userData == null || userData.PasswordHash != HashPassword(password))
+            return null;
+
+         return userData;
       }
 
-      public async Task<User> GetUserById(int id)
+      public async Task RegisterUserAsync(UserData userData, string password)
       {
-         return await _userRepository.GetUserById(id);
-      }
+         ValidateUserData(userData);
 
-      public async Task<User> GetUserByUsername(string username)
-      {
-         return await _userRepository.GetUserByUsername(username);
-      }
-
-      public async Task<User> GetUserByEmail(string email)
-      {
-         return await _userRepository.GetUserByEmail(email);
-      }
-
-      public async Task AddUser(User user)
-      {
-         user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
-         await _userRepository.AddUser(user);
-      }
-
-      public async Task UpdateUser(User user)
-      {
-         if (!string.IsNullOrEmpty(user.password))
+         User user = new User
          {
-            user.password = BCrypt.Net.BCrypt.HashPassword(user.password);
-         }
-         await _userRepository.UpdateUser(user);
+            UserId = Guid.NewGuid(),
+            PasswordHash = HashPassword(password),
+            Name = userData.Name,
+            Username = userData.Username,
+            Email = userData.Email,
+            BirthdayDate = userData.BirthdayDate,
+            Cellphone = userData.Cellphone,
+            Telephone = userData.Telephone,
+            Country = userData.Country,
+            City = userData.City,
+         };
+
+         await _userRepository.AddUserAsync(user);
       }
 
-      public async Task DeleteUser(int id)
+      private void ValidateUserData(UserData userData)
       {
-         await _userRepository.DeleteUser(id);
+         if (!Validations.IsValidEmail(userData.Email))
+            throw new Exception("O email fornecido é inválido.");
       }
 
-      public async Task<bool> ValidateUser(string userSearchKey, string plainPassword)
+      private string HashPassword(string password)
       {
-         var user = await _userRepository.GetUserByUsername(userSearchKey);
-         if (user == null)
-            user = await _userRepository.GetUserByEmail(userSearchKey);
-
-         if (user == null)
-         {
-            return false;
-         }
-
-         // Verify the provided password against the hashed password
-         return BCrypt.Net.BCrypt.Verify(plainPassword, user.password);
+         using var sha256 = SHA256.Create();
+         var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
+         return Convert.ToBase64String(bytes);
       }
    }
 }

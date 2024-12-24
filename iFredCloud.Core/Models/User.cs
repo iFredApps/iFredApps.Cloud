@@ -1,23 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace iFredCloud.Core.Models
+﻿namespace iFredCloud.Core.Models
 {
-   public class User
+   public class User : UserData
    {
-      public int id { get; set; }
-      [Required]
-      [StringLength(60)]
-      public string? username { get; set; }
-      [Required]
-      [StringLength(120)]
-      public string? password { get; set; }
-      [Required]
-      [StringLength(150)]
-      public string? email { get; set; }
+      public Guid UserId { get; set; }
+      public string PasswordHash { get; set; }
+      public bool IsAdmin { get; set; }
+      public DateTime CreatedAt { get; set; }
+      public DateTime UpdatedAt { get; set; }
+   }
+
+   public class UserData
+   {
+      public string Name { get; set; }
+      public string Username { get; set; }
+      public string Email { get; set; }
+      public DateTime? BirthdayDate { get; set; }
+      public string Cellphone { get; set; }
+      public string Telephone { get; set; }
+      public string Country { get; set; }
+      public string City { get; set; }
    }
 }

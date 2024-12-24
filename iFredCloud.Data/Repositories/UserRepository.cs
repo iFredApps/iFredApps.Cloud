@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace iFredCloud.Data.Repositories
 {
-    public class UserRepository : IUserRepository
+   public class UserRepository : IUserRepository
    {
       private readonly AppDbContext _context;
 
@@ -18,46 +18,20 @@ namespace iFredCloud.Data.Repositories
          _context = context;
       }
 
-      public async Task<IEnumerable<User>> GetAllUsers()
+      public async Task<User> GetUserAsync(string user)
       {
-         return await _context.Users.ToListAsync();
+         return await _context.Users.FirstOrDefaultAsync(u => u.Email == user || u.Username == user);
       }
 
-      public async Task<User> GetUserById(int id)
+      public async Task<User> GetUserByIdAsync(Guid userId)
       {
-         return await _context.Users.FindAsync(id);
+         return await _context.Users.FindAsync(userId);
       }
 
-      public async Task<User> GetUserByUsername(string username)
-      {
-         return await _context.Users.FirstOrDefaultAsync(u => u.username == username);
-      }
-
-      public async Task<User> GetUserByEmail(string email)
-      {
-         return await _context.Users.FirstOrDefaultAsync(u => u.email == email);
-      }
-
-      public async Task AddUser(User user)
+      public async Task AddUserAsync(User user)
       {
          await _context.Users.AddAsync(user);
          await _context.SaveChangesAsync();
-      }
-
-      public async Task UpdateUser(User user)
-      {
-         _context.Users.Update(user);
-         await _context.SaveChangesAsync();
-      }
-
-      public async Task DeleteUser(int id)
-      {
-         var user = await _context.Users.FindAsync(id);
-         if (user != null)
-         {
-            _context.Users.Remove(user);
-            await _context.SaveChangesAsync();
-         }
       }
    }
 }

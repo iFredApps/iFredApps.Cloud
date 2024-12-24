@@ -2,15 +2,9 @@
 
 namespace iFredCloud.Core.Interfaces.Services
 {
-    public interface IUserService
-    {
-        Task<IEnumerable<User>> GetAllUsers();
-        Task<User> GetUserById(int id);
-        Task<User> GetUserByUsername(string username);
-        Task<User> GetUserByEmail(string email);
-        Task AddUser(User user);
-        Task UpdateUser(User user);
-        Task DeleteUser(int id);
-        Task<bool> ValidateUser(string userSearchKey, string plainPassword);
-    }
+   public interface IUserService
+   {
+      Task<User> AuthenticateAsync(string user, string password);
+      Task RegisterUserAsync(UserData userData, string password);
+   }
 }
