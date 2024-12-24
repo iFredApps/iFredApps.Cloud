@@ -1,7 +1,7 @@
-﻿using iFredCloud.Core.Models;
+﻿using iFredApps.Cloud.Core.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace iFredCloud.Data
+namespace iFredApps.Cloud.Data
 {
    public class AppDbContext : DbContext
    {

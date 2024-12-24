@@ -13,8 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\iFredCloud.Core\iFredCloud.Core.csproj" />
-    <ProjectReference Include="..\iFredCloud.Data\iFredCloud.Data.csproj" />
+    <ProjectReference Include="..\iFredApps.Cloud.Core\iFredApps.Cloud.Core.csproj" />
+    <ProjectReference Include="..\iFredApps.Cloud.Data\iFredApps.Cloud.Data.csproj" />
   </ItemGroup>
 
 </Project>

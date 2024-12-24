@@ -1,4 +1,4 @@
-﻿namespace iFredCloud.Core.Models
+﻿namespace iFredApps.Cloud.Core.Models
 {
    public class License : LicenseData
    {

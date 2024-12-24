@@ -396,4 +396,4 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
-/iFredCloud.Data/Migrations
+/iFredApps.Cloud.Data/Migrations

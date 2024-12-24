@@ -1,11 +1,11 @@
-﻿using iFredCloud.Core.Interfaces.Services;
-using iFredCloud.Core.Models;
+﻿using iFredApps.Cloud.Core.Interfaces.Services;
+using iFredApps.Cloud.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 using System.Security.Claims;
 
-namespace iFredCloud.Api.Controllers
+namespace iFredApps.Cloud.Api.Controllers
 {
    [ApiController]
    [Route("api/license")]

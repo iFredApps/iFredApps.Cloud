@@ -23,7 +23,7 @@
    </ItemGroup>
 
    <ItemGroup>
-      <ProjectReference Include="..\iFredCloud.Core\iFredCloud.Core.csproj" />
+      <ProjectReference Include="..\iFredApps.Cloud.Core\iFredApps.Cloud.Core.csproj" />
    </ItemGroup>
 
 </Project>

@@ -1,6 +1,0 @@
-@iFredCloud.Api_HostAddress = http://localhost:5244
-
-GET {{iFredCloud.Api_HostAddress}}/weatherforecast/
-Accept: application/json
-
-###

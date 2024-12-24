@@ -1,5 +1,5 @@
-﻿using iFredCloud.Core.Interfaces.Repository;
-using iFredCloud.Core.Models;
+﻿using iFredApps.Cloud.Core.Interfaces.Repository;
+using iFredApps.Cloud.Core.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iFredCloud.Data.Repositories
+namespace iFredApps.Cloud.Data.Repositories
 {
    public class UserRepository : IUserRepository
    {

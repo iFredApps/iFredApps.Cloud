@@ -1,13 +1,13 @@
-﻿using iFredCloud.Core.Interfaces.Repository;
-using iFredCloud.Core.Interfaces.Services;
-using iFredCloud.Core.Models;
+﻿using iFredApps.Cloud.Core.Interfaces.Repository;
+using iFredApps.Cloud.Core.Interfaces.Services;
+using iFredApps.Cloud.Core.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace iFredCloud.Core.Services
+namespace iFredApps.Cloud.Core.Services
 {
    public class LicenseService : ILicenseService
    {

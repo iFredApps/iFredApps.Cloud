@@ -1,12 +1,12 @@
 ﻿using iFredApps.Lib.Base;
-using iFredCloud.Core.Interfaces.Repository;
-using iFredCloud.Core.Interfaces.Services;
-using iFredCloud.Core.Models;
+using iFredApps.Cloud.Core.Interfaces.Repository;
+using iFredApps.Cloud.Core.Interfaces.Services;
+using iFredApps.Cloud.Core.Models;
 using System.Security.Cryptography;
 using System.Text;
 using System.Xml.Linq;
 
-namespace iFredCloud.Core.Services
+namespace iFredApps.Cloud.Core.Services
 {
    public class UserService : IUserService
    {

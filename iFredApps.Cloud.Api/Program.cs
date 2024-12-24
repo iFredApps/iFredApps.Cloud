@@ -1,8 +1,8 @@
-using iFredCloud.Core.Interfaces.Repository;
-using iFredCloud.Core.Interfaces.Services;
-using iFredCloud.Core.Services;
-using iFredCloud.Data;
-using iFredCloud.Data.Repositories;
+using iFredApps.Cloud.Core.Interfaces.Repository;
+using iFredApps.Cloud.Core.Interfaces.Services;
+using iFredApps.Cloud.Core.Services;
+using iFredApps.Cloud.Data;
+using iFredApps.Cloud.Data.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;

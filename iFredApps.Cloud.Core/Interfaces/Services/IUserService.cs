@@ -1,6 +1,6 @@
-﻿using iFredCloud.Core.Models;
+﻿using iFredApps.Cloud.Core.Models;
 
-namespace iFredCloud.Core.Interfaces.Services
+namespace iFredApps.Cloud.Core.Interfaces.Services
 {
    public interface IUserService
    {

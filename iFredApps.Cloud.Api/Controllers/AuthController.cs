@@ -1,5 +1,5 @@
-﻿using iFredCloud.Core.Interfaces.Services;
-using iFredCloud.Core.Models;
+﻿using iFredApps.Cloud.Core.Interfaces.Services;
+using iFredApps.Cloud.Core.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -7,7 +7,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace iFredCloud.Api.Controllers
+namespace iFredApps.Cloud.Api.Controllers
 {
    [ApiController]
    [Route("api/auth")]
