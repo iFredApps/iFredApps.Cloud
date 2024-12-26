@@ -8,12 +8,14 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="DotNetEnv" Version="3.1.1" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\iFredApps.Lib\iFredApps.Lib.csproj" />
     <ProjectReference Include="..\iFredApps.Cloud.Core\iFredApps.Cloud.Core.csproj" />
     <ProjectReference Include="..\iFredApps.Cloud.Data\iFredApps.Cloud.Data.csproj" />
   </ItemGroup>

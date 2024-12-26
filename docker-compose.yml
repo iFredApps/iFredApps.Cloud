@@ -1,39 +1,86 @@
 services:
-  api:
-    build:
-      context: ..
-      dockerfile: iFredCloud/iFredApps.Cloud.Api/Dockerfile
-    ports:
-      - "5000:5000" # Mapeia a porta 5000 para a API
+  db:
+    image: mysql:8.0
     environment:
-      - ASPNETCORE_ENVIRONMENT=Development
-      - ConnectionStrings__DefaultConnection=Server=mysql;Database=iFredApps_Cloud;User=root;Password=3DS3cur24_25
-    depends_on:
-      - mysql
-
-  mysql:
-    image: mysql:latest
-    container_name: mysql
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: 3DS3cur24_25
-      MYSQL_DATABASE: iFredApps_Cloud
-    ports:
-      - "3306:3306" # Mapeia a porta 3306 para o MySQL
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_SERVER: ${MYSQL_SERVER}
     volumes:
-      - db_data:/var/lib/mysql
+      - timetracker-db-data:/var/lib/mysql
+    networks:
+      - app-network
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - -h
+        - localhost
+        - -u
+        - ${MYSQL_USER}
+        - -p${MYSQL_PASSWORD}
+      timeout: 10s
+      interval: 30s
+      retries: 5
 
   phpmyadmin:
-    image: phpmyadmin/phpmyadmin:latest
-    container_name: phpmyadmin
-    restart: always
-    depends_on:
-      - mysql
+    image: phpmyadmin/phpmyadmin
     environment:
-      PMA_HOST: mysql
-      MYSQL_ROOT_PASSWORD: 3DS3cur24_25
+      PMA_HOST: db
+      PMA_PORT: "3306"
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:80
+      timeout: 10s
+      interval: 30s
+      retries: 3
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - app-network
     ports:
-      - "8087:80" # Mapeia a porta 8080 para o phpMyAdmin
+      - "8083:80"
+
+  webapi:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      JWT__AUDIENCE: ${JWT__AUDIENCE}
+      JWT__ISSUER: ${JWT__ISSUER}
+      JWT__KEY: ${JWT__KEY}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_SERVER: ${MYSQL_SERVER}
+      MYSQL_USER: ${MYSQL_USER}
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:80/health
+      timeout: 10s
+      interval: 30s
+      retries: 5
+    depends_on:
+      db:
+        condition: service_started
+    networks:
+      - app-network
+    ports:
+      - "8084:80"
+
+networks:
+  app-network:
+    driver: bridge
 
 volumes:
-  db_data:
+  ifredapps-cloud-db-data:

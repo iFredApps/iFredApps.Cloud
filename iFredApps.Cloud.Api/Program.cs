@@ -11,10 +11,80 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Configuração do DbContext
+// Identificar o ambiente (Production, Development, etc.)
+string environment = builder.Environment.EnvironmentName;
+
+// Carregar o arquivo .env correspondente ao ambiente
+if (environment == "Development")
+{
+   string envPath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory())?.FullName ?? "", ".env.development");
+   DotNetEnv.Env.Load(envPath);
+   Console.WriteLine("Read Development Environment Variables");
+}
+else if (environment == "Production")
+{
+   DotNetEnv.Env.Load(".env.production");
+   Console.WriteLine("Read Production Environment Variables");
+}
+else
+{
+   DotNetEnv.Env.Load(".env");
+   Console.WriteLine("Read Generic Environment Variables");
+}
+
+var envMySQLServer = Environment.GetEnvironmentVariable("MYSQL_SERVER");
+var envMySQLDatabase = Environment.GetEnvironmentVariable("MYSQL_DATABASE");
+var envMySQLUser = Environment.GetEnvironmentVariable("MYSQL_USER");
+var envMySQLPassword = Environment.GetEnvironmentVariable("MYSQL_PASSWORD");
+if (!string.IsNullOrEmpty(envMySQLServer) && !string.IsNullOrEmpty(envMySQLDatabase) && !string.IsNullOrEmpty(envMySQLUser) && !string.IsNullOrEmpty(envMySQLPassword))
+{
+   builder.Configuration["ConnectionStrings:DefaultConnection"] = $"Server={envMySQLServer};Database={envMySQLDatabase};User Id={envMySQLUser};Password={envMySQLPassword};";
+}
+
+var envJwtKey = Environment.GetEnvironmentVariable("JWT__KEY");
+if (!string.IsNullOrEmpty(envJwtKey))
+{
+   builder.Configuration["Jwt:Key"] = envJwtKey;
+}
+
+var envJwtIssuer = Environment.GetEnvironmentVariable("JWT__ISSUER");
+if (!string.IsNullOrEmpty(envJwtIssuer))
+{
+   builder.Configuration["Jwt:Issuer"] = envJwtIssuer;
+}
+
+var envJwtAudience = Environment.GetEnvironmentVariable("JWT__AUDIENCE");
+if (!string.IsNullOrEmpty(envJwtAudience))
+{
+   builder.Configuration["Jwt:Audience"] = envJwtAudience;
+}
+
+Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
+
+builder.Services.AddCors(options =>
+{
+   options.AddDefaultPolicy(builder =>
+   {
+      builder.AllowAnyOrigin()
+             .AllowAnyMethod()
+             .AllowAnyHeader();
+   });
+});
+
+// Configure o serviço para ler a string de conexão do banco de dados
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseMySql(builder.Configuration.GetConnectionString("DefaultConnection"),
-                     new MySqlServerVersion(new Version(8, 0))));
+    options.UseMySql(
+        builder.Configuration.GetConnectionString("DefaultConnection"),
+        new MySqlServerVersion(new Version(8, 0, 33)),
+        mySqlOptions =>
+        {
+           mySqlOptions.EnableRetryOnFailure(
+               maxRetryCount: 5,
+               maxRetryDelay: TimeSpan.FromSeconds(10),
+               errorNumbersToAdd: null);
+        }
+    )
+);
 
 // Repositórios
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -48,59 +118,118 @@ builder.Services.AddSwaggerGen(options =>
 {
    options.SwaggerDoc("v1", new OpenApiInfo
    {
-      Title = "iFredCloud API",
+      Title = "iFredApps Cloud",
       Version = "v1",
-      Description = "API para autenticação de usuários e validação de licenças.",
+      Description = "API for user authentication and license validation.",
    });
 
    // Adiciona suporte ao JWT no Swagger
    options.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
    {
-      Name = "Authorization",
+      In = ParameterLocation.Header,
       Type = SecuritySchemeType.ApiKey,
       Scheme = "Bearer",
       BearerFormat = "JWT",
-      In = ParameterLocation.Header,
-      Description = "Digite 'Bearer {seu token JWT}' para autenticar-se.",
+      Name = "Authorization",
+      Description = "Enter 'Bearer {your JWT token}' to authenticate.",
    });
 
    options.AddSecurityRequirement(new OpenApiSecurityRequirement
-    {
-        {
-            new OpenApiSecurityScheme
+   {
+      {
+         new OpenApiSecurityScheme
+         {
+            Reference = new OpenApiReference
             {
-                Reference = new OpenApiReference
-                {
-                    Type = ReferenceType.SecurityScheme,
-                    Id = "Bearer"
-                }
-            },
-            Array.Empty<string>()
-        }
-    });
+               Type = ReferenceType.SecurityScheme,
+               Id = "Bearer"
+            }
+         },
+         Array.Empty<string>()
+      }
+   });
 });
 
-// Configuração de autorização
-//builder.Services.AddAuthorization(options =>
-//{
-//   options.AddPolicy("Admin", policy => policy.RequireRole("Admin")); // Adiciona política para o papel 'Admin'
-//});
 
-builder.Services.AddControllers();
-
-var app = builder.Build();
-
-// Configuração de Swagger apenas para ambiente de desenvolvimento
-if (app.Environment.IsDevelopment())
+try
 {
+   var app = builder.Build();
+
+   if (app.Environment.IsProduction())
+   {
+      app.Urls.Add("http://0.0.0.0:80");
+   }
+
+   try
+   {
+      using (var scope = app.Services.CreateScope())
+      {
+         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+         // Aplica migrações pendentes
+         dbContext.Database.Migrate();
+         Console.WriteLine("Database migration applied successfully.");
+      }
+   }
+   catch (Exception ex)
+   {
+      Console.WriteLine("Database migration failed: " + ex.Message);
+      Console.WriteLine("Stack Trace: " + ex.StackTrace);
+      if (ex.InnerException != null)
+      {
+         Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+      }
+      throw;
+   }
+
+   // Test the database connection
+   try
+   {
+      using (var scope = app.Services.CreateScope())
+      {
+         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+         dbContext.Database.EnsureCreated();
+         Console.WriteLine("Database connection successful.");
+      }
+   }
+   catch (Exception ex)
+   {
+      Console.WriteLine("Database connection failed: " + ex.Message);
+      Console.WriteLine("Stack Trace: " + ex.StackTrace);
+      if (ex.InnerException != null)
+      {
+         Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+      }
+      throw;
+   }
+
+   app.UseHttpsRedirection();
+
+   app.UseAuthentication();
+   app.UseAuthorization();
+
+   // Configuração do pipeline de requisições HTTP
+   //if (app.Environment.IsDevelopment())
+   //{
    app.UseSwagger();
    app.UseSwaggerUI(c =>
    {
-      c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredCloud API v1");
+      c.SwaggerEndpoint("/swagger/v1/swagger.json", "iFredApps Cloud API v1");
    });
-}
+   //}
 
-app.UseAuthentication();
-app.UseAuthorization();
-app.MapControllers();
-app.Run();
+   app.MapControllers();
+
+   app.Run();
+
+}
+catch (Exception ex)
+{
+   Console.WriteLine("Unhandled exception caught: " + ex.Message);
+   Console.WriteLine("Stack Trace: " + ex.StackTrace);
+   if (ex.InnerException != null)
+   {
+      Console.WriteLine("Inner Exception: " + ex.InnerException.Message);
+   }
+   throw;
+}
