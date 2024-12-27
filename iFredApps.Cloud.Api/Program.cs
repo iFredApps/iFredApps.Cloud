@@ -111,6 +111,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+builder.Services.AddControllers();
 
 // Adiciona o Swagger
 builder.Services.AddEndpointsApiExplorer();
