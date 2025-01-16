@@ -49,8 +49,8 @@ services:
 
   webapi:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../
+      dockerfile: iFredApps.Cloud/Dockerfile
     environment:
       ASPNETCORE_ENVIRONMENT: Production
       JWT__AUDIENCE: ${JWT__AUDIENCE}
