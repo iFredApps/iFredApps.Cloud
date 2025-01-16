@@ -10,7 +10,7 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
 # Copiar e restaurar as dependências em uma única etapa para eficiência
-COPY iFredApps.Lib/iFredApps.Lib.csproj iFredApps.Cloud/iFredApps.Lib/
+COPY iFredApps.Lib/iFredApps.Lib.csproj iFredApps.Lib/
 COPY iFredApps.Cloud/iFredApps.Cloud.Api/iFredApps.Cloud.Api.csproj iFredApps.Cloud/iFredApps.Cloud.Api/
 COPY iFredApps.Cloud/iFredApps.Cloud.Core/iFredApps.Cloud.Core.csproj iFredApps.Cloud/iFredApps.Cloud.Core/
 COPY iFredApps.Cloud/iFredApps.Cloud.Data/iFredApps.Cloud.Data.csproj iFredApps.Cloud/iFredApps.Cloud.Data/

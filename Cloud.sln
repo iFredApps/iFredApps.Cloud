@@ -9,13 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iFredApps.Cloud.Core", "iFr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iFredApps.Cloud.Data", "iFredApps.Cloud.Data\iFredApps.Cloud.Data.csproj", "{EBFAE37D-1D27-4032-8985-A3D6B838E301}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8538EE6F-43E6-4187-8930-CA63C8234032}"
-	ProjectSection(SolutionItems) = preProject
-		docker-compose.yml = docker-compose.yml
-	EndProjectSection
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "iFredApps.Lib", "..\iFredApps.Lib\iFredApps.Lib.csproj", "{88751BA1-46C8-40D4-B055-AFBB5801A14A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -62,24 +55,9 @@ Global
 		{EBFAE37D-1D27-4032-8985-A3D6B838E301}.Release|x64.Build.0 = Release|Any CPU
 		{EBFAE37D-1D27-4032-8985-A3D6B838E301}.Release|x86.ActiveCfg = Release|Any CPU
 		{EBFAE37D-1D27-4032-8985-A3D6B838E301}.Release|x86.Build.0 = Release|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Debug|x64.Build.0 = Debug|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Debug|x86.Build.0 = Debug|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Release|x64.ActiveCfg = Release|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Release|x64.Build.0 = Release|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Release|x86.ActiveCfg = Release|Any CPU
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(NestedProjects) = preSolution
-		{88751BA1-46C8-40D4-B055-AFBB5801A14A} = {8538EE6F-43E6-4187-8930-CA63C8234032}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {0D043528-B191-4052-91C3-5DECEC08AAD4}
