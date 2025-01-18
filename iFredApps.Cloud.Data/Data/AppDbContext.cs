@@ -34,8 +34,9 @@ namespace iFredApps.Cloud.Data
             entity.Property(u => u.City).IsRequired(false).HasMaxLength(60);
             entity.Property(u => u.PasswordHash).IsRequired();
             entity.Property(u => u.IsAdmin).IsRequired().HasDefaultValue(0);
-            entity.Property(u => u.CreatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP");
-            entity.Property(u => u.UpdatedAt).HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+            entity.Property(u => u.CreatedAt).HasColumnType("TIMESTAMP").HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(u => u.UpdatedAt).HasColumnType("TIMESTAMP").HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
+
          });
 
          // Configuração da tabela Licenses
@@ -47,6 +48,8 @@ namespace iFredApps.Cloud.Data
             entity.Property(l => l.ExpirationDate).IsRequired(false);
             entity.Property(l => l.MaxQuota).IsRequired(false);
             entity.Property(l => l.UsageCount).HasDefaultValue(0);
+            entity.Property(u => u.CreatedAt).HasColumnType("TIMESTAMP").HasDefaultValueSql("CURRENT_TIMESTAMP");
+            entity.Property(u => u.UpdatedAt).HasColumnType("TIMESTAMP").HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
 
             // Relacionamento com Users
             entity.HasOne<User>()

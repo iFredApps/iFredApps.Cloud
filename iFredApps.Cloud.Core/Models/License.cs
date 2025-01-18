@@ -13,6 +13,8 @@
       public DateTime? ExpirationDate { get; set; }
       public int? MaxQuota { get; set; }
       public int UsageCount { get; set; }
+      public DateTime CreatedAt { get; set; }
+      public DateTime UpdatedAt { get; set; }
    }
 
    public struct sttLicenseType

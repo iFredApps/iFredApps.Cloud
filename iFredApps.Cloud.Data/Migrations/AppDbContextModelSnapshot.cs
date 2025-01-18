@@ -28,6 +28,11 @@ namespace iFredApps.Cloud.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<DateTime>("CreatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
                     b.Property<DateTime?>("ExpirationDate")
                         .HasColumnType("datetime(6)");
 
@@ -43,6 +48,11 @@ namespace iFredApps.Cloud.Data.Migrations
                         .IsRequired()
                         .HasMaxLength(50)
                         .HasColumnType("varchar(50)");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("TIMESTAMP")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
 
                     b.Property<int>("UsageCount")
                         .ValueGeneratedOnAdd()
@@ -82,7 +92,7 @@ namespace iFredApps.Cloud.Data.Migrations
 
                     b.Property<DateTime>("CreatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("TIMESTAMP")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("Email")
@@ -110,7 +120,7 @@ namespace iFredApps.Cloud.Data.Migrations
 
                     b.Property<DateTime>("UpdatedAt")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("datetime(6)")
+                        .HasColumnType("TIMESTAMP")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP");
 
                     b.Property<string>("Username")
