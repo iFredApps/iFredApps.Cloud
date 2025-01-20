@@ -12,8 +12,8 @@ using iFredApps.Cloud.Data;
 namespace iFredApps.Cloud.Data.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250118104901_InitialMigration")]
-    partial class InitialMigration
+    [Migration("20250120105336_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
