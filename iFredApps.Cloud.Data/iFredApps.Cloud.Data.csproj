@@ -26,4 +26,8 @@
       <ProjectReference Include="..\iFredApps.Cloud.Core\iFredApps.Cloud.Core.csproj" />
    </ItemGroup>
 
+   <ItemGroup>
+     <Folder Include="Migrations\" />
+   </ItemGroup>
+
 </Project>
