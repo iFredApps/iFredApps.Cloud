@@ -1,5 +1,7 @@
-﻿using iFredApps.Cloud.Core.Interfaces.Services;
+﻿using iFredApps.Cloud.Api.Models;
+using iFredApps.Cloud.Core.Interfaces.Services;
 using iFredApps.Cloud.Core.Models;
+using iFredApps.Cloud.Core.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -39,6 +41,20 @@ namespace iFredApps.Cloud.Api.Controllers
       {
          await _userService.RegisterUserAsync(request, request.Password);
          return Ok("User registered successfully");
+      }
+
+
+      [HttpGet("getLoginInformation")]
+      public async Task<IActionResult> GetLoginInformation()
+      {
+         var userId = UserHelper.GetUserIdFromClaims(User);
+
+         var userData = await _userService.GetUserByIdAsync(userId);
+
+         if (userData == null)
+            return NotFound("User info not found");
+
+         return Ok(userData);
       }
 
       private string GenerateJwtToken(User user)

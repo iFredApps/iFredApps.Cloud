@@ -1,4 +1,5 @@
-﻿using iFredApps.Cloud.Core.Interfaces.Services;
+﻿using iFredApps.Cloud.Api.Models;
+using iFredApps.Cloud.Core.Interfaces.Services;
 using iFredApps.Cloud.Core.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -22,7 +23,7 @@ namespace iFredApps.Cloud.Api.Controllers
       [HttpGet("{serviceType}")]
       public async Task<IActionResult> GetLicense(string serviceType)
       {
-         var userId = GetUserIdFromToken();
+         var userId = UserHelper.GetUserIdFromClaims(User);
          var license = await _licenseService.GetLicenseAsync(userId, serviceType);
 
          if (license == null)
@@ -34,7 +35,7 @@ namespace iFredApps.Cloud.Api.Controllers
       [HttpPost("validate/{serviceType}")]
       public async Task<IActionResult> ValidateLicense(string serviceType)
       {
-         var userId = GetUserIdFromToken();
+         var userId = UserHelper.GetUserIdFromClaims(User);
          var isValid = await _licenseService.ValidateLicenseAsync(userId, serviceType);
 
          return Ok(new { IsValid = isValid });
@@ -46,11 +47,6 @@ namespace iFredApps.Cloud.Api.Controllers
       {
          await _licenseService.AddLicenseAsync(request);
          return Ok("License created successfully");
-      }
-
-      private Guid GetUserIdFromToken()
-      {
-         return Guid.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
       }
    }
 }

@@ -18,10 +18,14 @@ namespace iFredApps.Cloud.Data.Repositories
          _context = context;
       }
 
+      public async Task<List<License>> GetLicensesAsync(Guid userId)
+      {
+         return await _context.Licenses.Where(l => l.UserId == userId).ToListAsync();
+      }
+
       public async Task<License> GetLicenseByUserAndServiceAsync(Guid userId, string serviceType)
       {
-         return await _context.Licenses
-                              .FirstOrDefaultAsync(l => l.UserId == userId && l.ServiceName == serviceType);
+         return await _context.Licenses.FirstOrDefaultAsync(l => l.UserId == userId && l.ServiceName == serviceType);
       }
 
       public async Task AddLicenseAsync(License license)

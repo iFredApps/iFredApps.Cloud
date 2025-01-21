@@ -43,6 +43,7 @@ namespace iFredApps.Cloud.Data
          modelBuilder.Entity<License>(entity =>
          {
             entity.HasKey(l => l.LicenseId);
+            entity.Property(l => l.UserId).HasColumnName("UserId").IsRequired();
             entity.Property(l => l.ServiceName).IsRequired().HasMaxLength(50);
             entity.Property(l => l.LicenseType).IsRequired().HasMaxLength(20);
             entity.Property(l => l.ExpirationDate).IsRequired(false);

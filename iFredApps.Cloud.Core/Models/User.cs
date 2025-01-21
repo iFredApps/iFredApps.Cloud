@@ -7,6 +7,7 @@
       public bool IsAdmin { get; set; }
       public DateTime CreatedAt { get; set; }
       public DateTime UpdatedAt { get; set; }
+      public List<License> Licenses { get; set; }
    }
 
    public class UserData

@@ -11,10 +11,25 @@ namespace iFredApps.Cloud.Core.Services
    public class UserService : IUserService
    {
       private readonly IUserRepository _userRepository;
+      private readonly ILicenseRepository _licenseRepository;
 
-      public UserService(IUserRepository userRepository)
+      public UserService(IUserRepository userRepository, ILicenseRepository licenseRepository)
       {
          _userRepository = userRepository;
+         _licenseRepository = licenseRepository;
+      }
+
+      public async Task<User> GetUserByIdAsync(Guid userId)
+      {
+         var userData = await _userRepository.GetUserByIdAsync(userId);
+        
+         if(userData != null)
+         {
+            userData.PasswordHash = null;
+            userData.Licenses = await _licenseRepository.GetLicensesAsync(userId);
+         }
+
+         return userData;
       }
 
       public async Task<User> AuthenticateAsync(string user, string password)
